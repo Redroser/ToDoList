@@ -19,14 +19,21 @@ namespace ToDoList.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateTaskViewModel model) 
+        public async Task<IActionResult> Create(CreateTaskViewModel model)
         {
             var response = await _taskService.Create(model);
-            if (response.StatusCode == Domain.Enum.StatusCode.OK) 
+            if (response.StatusCode == Domain.Enum.StatusCode.OK)
             {
                 return Ok(new { description = response.Description });
             }
             return BadRequest(new { description = response.Description });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TaskHandler()
+        {
+            var response = await _taskService.GetTasks();
+            return Json(new { data = response.Data });
         }
     }
 }
